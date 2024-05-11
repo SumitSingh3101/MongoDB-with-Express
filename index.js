@@ -21,9 +21,9 @@ async function main(){
     await mongoose.connect("mongodb://localhost:27017/whatsapp");
 }
 
+//View Route
 app.get("/chats",async (req,res)=>{
     let chats = await Chat.find()
-    console.log(chats);
     res.render("index.ejs", {chats});
 })
 
@@ -77,5 +77,13 @@ app.put("/chats/:id", async (req, res) => {
         {runValidators: true, new: true}
     );
 
+    res.redirect("/chats");
+});
+
+//Destroy Route
+app.delete("/chats/:id", async (req, res) => {
+    let {id} = req.params;
+    let deletedChat = await Chat.findByIdAndDelete(id);
+    console.log(deletedChat);
     res.redirect("/chats");
 });
